@@ -15,7 +15,8 @@ public enum Brand
     NATIVA("Nativa", "NAT"),
     DINERS("Diners", "DIN"),
     NATIVA_MAS("Nativa Mastercard", "NATM"),
-    CABAL("Cabal", "CAB");
+    CABAL("Cabal", "CAB"),
+    NONE("Not informed","NI");
 
     //~ Fields ...................................................................................................................
 
@@ -27,6 +28,17 @@ public enum Brand
     Brand(@NotNull String label, @NotNull String id) {
         this.label = label;
         this.id = id;
+    }
+    
+    public Brand getCard(String key){
+    	if(key!=null){
+    		for(Brand item : Brand.values()){
+    			if(item.toString().equalsIgnoreCase(key)){
+    				return item;
+    			}
+    		}
+    	}
+    	return null;
     }
 
     

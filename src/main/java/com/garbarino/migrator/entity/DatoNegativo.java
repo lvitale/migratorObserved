@@ -2,6 +2,7 @@ package com.garbarino.migrator.entity;
 
 import java.util.Date;
 
+import com.garbarino.migrator.enums.Brand;
 import com.garbarino.migrator.enums.GenderType;
 import com.garbarino.migrator.enums.IdType;
 import com.garbarino.migrator.type.AddressSerchType;
@@ -153,6 +154,7 @@ public class DatoNegativo {
 		card.setLastNumber(apellido);
 		card.setDocValue(documento);
 		card.setDocType(IdType.DNI);
+		card.setCardbrand(Brand.NONE.getCard(tarjeta));
 		card.setBinNumber(numTarjeta);
 		
 		card.setObservation(observaciones);
