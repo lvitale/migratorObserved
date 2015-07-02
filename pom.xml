@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.garbarino</groupId>
-  <artifactId>migrator-observed</artifactId>
+  <artifactId>migratorObserved</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>migrator-observed</name>
+  <name>migratorObserved</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -40,5 +40,6 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>	
+		
   </dependencies>
 </project>

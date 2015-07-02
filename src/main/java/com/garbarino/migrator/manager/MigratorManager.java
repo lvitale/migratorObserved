@@ -30,5 +30,7 @@ public class MigratorManager {
 				
 			}
 		}
-	
+	public void callArchivo(){
+		RestService.getInstance().grabarArchivo();
+	}
 }

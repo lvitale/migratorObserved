@@ -25,6 +25,7 @@ public class Mapper{
 	       
 			value=mapper.writeValueAsString(type);
 			
+			
 		}catch(Exception ex){
 			
 		}

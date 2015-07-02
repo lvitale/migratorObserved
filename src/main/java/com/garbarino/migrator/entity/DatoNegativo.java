@@ -137,48 +137,59 @@ public class DatoNegativo {
 	
 	public ObservedType populateObserved(){
 		ObservedType observed = new ObservedType();
-		observed.setAddress(populateAddress());
-		observed.setCard(populateCard());
-		observed.setIp(populateIp());
-		observed.setPerson(populatePerson());
+		if(populateAddress() != null) observed.setAddress(populateAddress());
+		if(populateCard() != null)observed.setCard(populateCard());
+		if(populateIp() != null)observed.setIp(populateIp());
+		if(populatePerson() != null)observed.setPerson(populatePerson());
+		observed.setObservation(observaciones);
 		return observed;
 	}
 	private IpSearchType populateIp(){
-		IpSearchType ipSearch = new IpSearchType();
+		IpSearchType ipSearch = null;
+		if(ip != null){
+		ipSearch = new IpSearchType();
 		ipSearch.setIp(ip);
 		ipSearch.setObservation(observaciones);
+		}
 		return ipSearch;
 	}
 	private CardSearchType populateCard(){
-		CardSearchType card = new CardSearchType();
-		card.setLastNumber(apellido);
-		card.setDocValue(documento);
+		CardSearchType card = null;
+		Brand brand = Brand.NONE.getCard(tarjeta);
+		if(brand != null && numTarjeta != null ){
+		card = new CardSearchType();		
+		card.setCardbrand(brand);
+		card.setLastNumber(numTarjeta);
 		card.setDocType(IdType.DNI);
-		card.setCardbrand(Brand.NONE.getCard(tarjeta));
-		card.setBinNumber(numTarjeta);
-		
+		card.setDocValue(documento);	
 		card.setObservation(observaciones);
-		
+		}
 		return card;
 	}
 	private PersonSearchType populatePerson(){
-		PersonSearchType person = new PersonSearchType();
+		PersonSearchType person = null;
+		if(documento !=  null){
+		person = new PersonSearchType();
+		
 		person.setFirstName(nombre);
 		person.setLastName(apellido);
 		person.setDocValue(documento);
 		person.setDocType(IdType.DNI);
-		
 		person.setGender(GenderType.NONE);
 		person.setObservation(observaciones);
+		}
 		return person;
 	}
 	private AddressSerchType populateAddress(){
-		AddressSerchType address = new AddressSerchType();
-		address.setCity(localidad);
-		address.setNumber(numCalle);
-		address.setObservation(observaciones);
-		address.setStreetName(calle);
-		return address;
+		AddressSerchType addressSerch = null;
+		if(numCalle != null && calle != null){
+		addressSerch = new AddressSerchType();
+		addressSerch.setCity(localidad);
+		addressSerch.setNumber(numCalle);
+		addressSerch.setObservation(observaciones);
+		addressSerch.setStreetName(calle);
+		}
+		return addressSerch;
 	}
 	
 }
