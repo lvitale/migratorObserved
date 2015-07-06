@@ -156,7 +156,7 @@ public class DatoNegativo {
 	private CardSearchType populateCard(){
 		CardSearchType card = null;
 		Brand brand = Brand.NONE.getCard(tarjeta);
-		if(brand != null && numTarjeta != null ){
+		if(brand != null && numTarjeta != null && documento != null ){
 		card = new CardSearchType();		
 		card.setCardbrand(brand);
 		card.setLastNumber(numTarjeta);
@@ -182,7 +182,7 @@ public class DatoNegativo {
 	}
 	private AddressSerchType populateAddress(){
 		AddressSerchType addressSerch = null;
-		if(numCalle != null && calle != null){
+		if(numCalle != null && calle != null && localidad != null){
 		addressSerch = new AddressSerchType();
 		addressSerch.setCity(localidad);
 		addressSerch.setNumber(numCalle);

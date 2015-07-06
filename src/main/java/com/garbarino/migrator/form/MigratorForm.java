@@ -64,7 +64,7 @@ public class MigratorForm extends JFrame {
 	private void procesar(){
 		try{
 			MigratorManager manager = new MigratorManager();
-			manager.migrate(70);
+			manager.migrate(2171);
 			manager.callArchivo();
 			lblResultado.setText("Ok");
 		}catch(Exception ex){

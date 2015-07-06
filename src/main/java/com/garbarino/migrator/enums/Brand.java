@@ -16,6 +16,9 @@ public enum Brand
     DINERS("Diners", "DIN"),
     NATIVA_MAS("Nativa Mastercard", "NATM"),
     CABAL("Cabal", "CAB"),
+    AMERICAN("American","AMER"),
+    MERCADO_PAGO("Mercado Pago","MERP"),
+    BANELCO("Banelco","BANE"),
     NONE("Not informed","NI");
 
     //~ Fields ...................................................................................................................
@@ -32,11 +35,21 @@ public enum Brand
     
     public Brand getCard(String key){
     	if(key!=null){
+    		
     		for(Brand item : Brand.values()){
-    			if(item.toString().equalsIgnoreCase(key)){
+    			String aux[] = key.split(" ");
+    			if(item.toString().equalsIgnoreCase(aux[0])){
     				return item;
     			}
     		}
+    		// hay dos tipos de tarjeta master en la base
+    		if("MASTER".equals(key)){
+    			return Brand.MASTERCARD;
+    		}
+    		if("TARJETA NARANJA".equals(key)){
+    			return Brand.NARANJA;
+    		}
+    		
     	}
     	return null;
     }
