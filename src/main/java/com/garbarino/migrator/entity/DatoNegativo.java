@@ -155,17 +155,29 @@ public class DatoNegativo {
 	}
 	private CardSearchType populateCard(){
 		CardSearchType card = null;
+		
 		Brand brand = Brand.NONE.getCard(tarjeta);
 		if(brand != null && numTarjeta != null && documento != null ){
+		String tarj = numTarjeta.trim();	
 		card = new CardSearchType();		
 		card.setCardbrand(brand);
-		card.setLastNumber(numTarjeta);
+		if(tarj.length() == 4) {
+			card.setLastNumber(tarj);
+		}else{
+			if(tarj.length() > 10){
+				card.setBinNumber(tarj.substring(0, 6));
+				card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
+			}else{
+				card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
+			}
+		}
 		card.setDocType(IdType.DNI);
-		card.setDocValue(documento);	
+		card.setDocValue(documento.trim());	
 		card.setObservation(observaciones);
 		}
 		return card;
 	}
+	
 	private PersonSearchType populatePerson(){
 		PersonSearchType person = null;
 		if(documento !=  null){
@@ -173,7 +185,7 @@ public class DatoNegativo {
 		
 		person.setFirstName(nombre);
 		person.setLastName(apellido);
-		person.setDocValue(documento);
+		person.setDocValue(documento.trim());
 		person.setDocType(IdType.DNI);
 		person.setGender(GenderType.NONE);
 		person.setObservation(observaciones);

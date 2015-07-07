@@ -16,7 +16,7 @@ public class DatoNegativoDao {
 		List<DatoNegativo> listado = new ArrayList<DatoNegativo>();
 		try{
 		connection.connect();
-		ResultSet rs=connection.executeQuery("SELECT * FROM DATOS_NEGATIVOS WHERE ROWNUM <= "+ rows.toString() );
+		ResultSet rs=connection.executeQuery("SELECT * FROM DATOS_NEGATIVOS WHERE ROWNUM < "+ rows.toString() );
 		while(rs.next()){
 			DatoNegativo negativo = new DatoNegativo();
 			

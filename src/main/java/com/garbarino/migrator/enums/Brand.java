@@ -34,10 +34,11 @@ public enum Brand
     }
     
     public Brand getCard(String key){
+    	String delimiters = "(\\s|-)";
     	if(key!=null){
     		
     		for(Brand item : Brand.values()){
-    			String aux[] = key.split(" ");
+    			String aux[] = key.split(delimiters);
     			if(item.toString().equalsIgnoreCase(aux[0])){
     				return item;
     			}
