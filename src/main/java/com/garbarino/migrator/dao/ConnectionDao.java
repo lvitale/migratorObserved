@@ -28,16 +28,16 @@ public class ConnectionDao {
 		 cn.close();
 	 }
 	 private String getUrl(){
-		  return "jdbc:oracle:thin:@Srvorad2.garba.com.ar:1626:gartrde";
-		 //return propertie.getPropertie("dataSource.url");
+		  //return "jdbc:oracle:thin:@Srvorad2.garba.com.ar:1626:gartrde";
+		 return propertie.getPropertie("dataSource.url");
 	 }
 	 private String getUser(){
-		 return "pickup";
-		 //return propertie.getPropertie("dataSource.username");
+		 //return "pickup";
+		 return propertie.getPropertie("dataSource.username");
 	 }
 	 private String getPassword(){
-		 return "pickup_0000_desa";
-		 //return propertie.getPropertie("dataSource.password");
+		 //return "pickup_0000_desa";
+		 return propertie.getPropertie("dataSource.password");
 	 }
 	  
 	

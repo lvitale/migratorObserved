@@ -114,18 +114,15 @@ public class RestService {
 	}
 	private String getUlrService(){
 		StringBuffer url = new StringBuffer();
-		//url.append(property.getPropertie("genesis.service.observed.url"));
-		//url.append(property.getPropertie("genesis.service.observed.report"));
-		url.append("http://localhost:8080/services/observation/report/observed");
+		url.append(property.getPropertie("genesis.service.observed.url"));
+		url.append(property.getPropertie("genesis.service.observed.report"));
 		return url.toString();
 	}
 	private String getTokenValue(){
-		return "MhqYi9Xf+EKLvR7RdiIN7bAiMp0A0TxN180D4I0N8Eg=";
-		//return property.getPropertie("genesis.service.nebserved.token.value");
+		return property.getPropertie("genesis.service.nebserved.token.value");
 	}
 	private String getTokenName(){
-		return "X-Tek-App-Token";
-		//return property.getPropertie("genesis.service.observed.token.name");
+		return property.getPropertie("genesis.service.observed.token.name");
 	}
 		
 }

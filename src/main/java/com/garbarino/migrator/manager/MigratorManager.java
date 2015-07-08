@@ -10,17 +10,21 @@ import com.garbarino.migrator.utils.Mapper;
 
 public class MigratorManager {
 
-//	RestService service = RestService.getInstance();
-//	Mapper mapper = Mapper.getInstance();
-	
-	public void migrate(int rows){
+    
+    private final int rowsNum;
+    
+	public MigratorManager(int rows){
+		rowsNum=rows;
+	}
+	public void migrate(){
 		
-		List<DatoNegativo> listado = new ArrayList<DatoNegativo>();
-		listado.addAll(new DatoNegativoDao().findAll(rows));
+			List<DatoNegativo> listado = new ArrayList<DatoNegativo>();
+			listado.addAll(new DatoNegativoDao().findAll(rowsNum));
+			
 		
-		for(DatoNegativo negativo : listado){
-			callService(negativo);
-		}
+			for(DatoNegativo negativo : listado){
+				callService(negativo);
+			}
 	}
 	
 	private void callService(DatoNegativo negativo){
