@@ -6,23 +6,23 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.garbarino.migrator.enums.ServiceName;
+import com.garbarino.migrator.enums.State;
+import com.garbarino.migrator.type.ResulSet;
 import com.garbarino.migrator.utils.PropertiesUtil;
 
 
@@ -33,59 +33,62 @@ public class RestService {
 	     private static final int STATUS_FAIL = 500;
 	     private static Integer key = 1;
 	     Map<Integer,String> message = null;
+	     private List<ResulSet> results= new ArrayList<ResulSet>();
+	     ResulSet result =null; 
+	     private Integer id=0;
+	     private ServiceName serviceName = ServiceName.OBSERVED_REPORT;
+	     
 	     
 	     private RestService(){
 	    	 message = new HashMap<Integer, String>();
-	    }
+	     }
+	     // Pattern singleton
 	     public static RestService getInstance(){
 	    	 return instance;
 	     }
+	    
 		public void call(String json){
 		 HttpResponse response;
+		 result = new ResulSet();
+		 result.setId(getId());
+		 
+		 try{
 		
-	try{
+			 HttpClient httpclient= new DefaultHttpClient();
 		
-		HttpClient httpclient= new DefaultHttpClient();
+			 HttpPost httppost= new HttpPost (getUlrService());
+			 StringEntity se=new StringEntity (json,"UTF-8");
+			 se.setContentType("application/json;charset=UTF-8");
+        
+			 httppost.setEntity(se);
+        
+			 httppost.setHeader("Accept", "application/json");
+			 httppost.setHeader("Content-type", "application/json;charset=UTF-8");
+			 httppost.setHeader(getTokenName(), getTokenValue());
+        
+			 response=httpclient.execute(httppost);
+       
+			 result.setResponse(response.getEntity().getContent().toString());
+			 String resp =  EntityUtils.toString(response.getEntity()); 		
+			 Map datos = new ObjectMapper().readValue(resp, Map.class);
 		
-        HttpPost httppost= new HttpPost (getUlrService());
-        StringEntity se=new StringEntity (json,"UTF-8");
-        se.setContentType("application/json;charset=UTF-8");
-        
-        httppost.setEntity(se);
-        
-        //System.out.println(se);
-        httppost.setHeader("Accept", "application/json");
-        httppost.setHeader("Content-type", "application/json;charset=UTF-8");
-        httppost.setHeader(getTokenName(), getTokenValue());
-        
-        response=httpclient.execute(httppost);
+			 // Se establecio correctamente la comunicacion con el servicio
+			 if(response.getStatusLine().getStatusCode() == 200 && "ok".equals(datos.get("status"))){
+				 result.setState(State.OK);
+			 }else{	   
+				 result.setState(State.ERROR);
+			 }
        
-       
-        //System.out.println(response);
-        //System.out.println(((response.getEntity().getContent())));
-        //System.out.println("Response status" + response.getStatusLine().toString());
-        
-        //System.out.println(response.getStatusLine().getStatusCode());
-       System.out.println("respuestas del servicio " + response );
-       if(response.getStatusLine().getStatusCode() == 500){
-    	   message.put(key, "false");
-       }else{	   
-		   String resp =  EntityUtils.toString(response.getEntity()); 		
-		   Map datos = new ObjectMapper().readValue(resp, Map.class);
-		   message.put(key, datos.get("status").toString());
-       }
-       key++;
-       
-           
-       //EntityUtils.consume(response.getEntity());             
-		}catch(Exception e){
-			e.getMessage();
-		}finally{
+		 }catch(Exception e){
+			System.err.append(e.getMessage());
+			result.setMessage(e.getMessage());
+			result.setState(State.ERROR);
+		 }finally{
 			
 		}
-	
-		
+		 results.add(result);
 	}
+		
 	public void grabarArchivo(){
 		File file= new File("src/main/resources/archivo.out");
 		FileWriter fw  = null;
@@ -112,10 +115,37 @@ public class RestService {
 				}
 		}
 	}
+	
+	public void clean(){
+		results = new ArrayList<ResulSet>();
+	}
+	
 	private String getUlrService(){
 		StringBuffer url = new StringBuffer();
 		url.append(property.getPropertie("genesis.service.observed.url"));
-		url.append(property.getPropertie("genesis.service.observed.report"));
+		if(ServiceName.OBSERVED_REPORT.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.observed.report"));
+		}if(ServiceName.CARD_REPORT.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.card.report"));
+		}if(ServiceName.IP_REṔORT.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.ip.report"));
+		}if(ServiceName.PERSON_REPORT.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.person.report"));
+		}if(ServiceName.ADDRESS_REPORT.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.address.report"));
+		}
+		
+		if(ServiceName.OBSERVED_CHECK.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.observed.check"));
+		}if(ServiceName.CARD_CHECK.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.card.check"));
+		}if(ServiceName.IP_CHECK.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.ip.check"));
+		}if(ServiceName.PERSON_CHECK.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.person.check"));
+		}if(ServiceName.ADDRESS_CHECK.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.address.check"));
+		}
 		return url.toString();
 	}
 	private String getTokenValue(){
@@ -123,6 +153,30 @@ public class RestService {
 	}
 	private String getTokenName(){
 		return property.getPropertie("genesis.service.observed.token.name");
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public ServiceName getServiceName() {
+		return serviceName;
+	}
+	public void setServiceName(ServiceName serviceName) {
+		this.serviceName = serviceName;
+	}
+	public ResulSet getResult() {
+		return result;
+	}
+	public void setResult(ResulSet result) {
+		this.result = result;
+	}
+	public List<ResulSet> getResults() {
+		return results;
+	}
+	public void setResults(List<ResulSet> results) {
+		this.results = results;
 	}
 		
 }

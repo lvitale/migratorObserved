@@ -93,10 +93,7 @@ public class MigratorForm extends JFrame {
 	}
 	private void procesar(){
 		try{
-<<<<<<< Updated upstream
-			MigratorManager manager = new MigratorManager();
-			manager.migrate(2172);
-=======
+
 			SchemaBoe boe = (SchemaBoe) cmbBoe.getSelectedItem();
 			
 			Context.getInstance().setContext(boe);
@@ -104,8 +101,7 @@ public class MigratorForm extends JFrame {
 			
 			MigratorManager manager = new MigratorManager(getRows());
 			manager.migrate();
->>>>>>> Stashed changes
-			manager.callArchivo();
+
 			lblResultado.setText("Ok");
 		}catch(Exception ex){
 			System.out.println(ex.getCause());

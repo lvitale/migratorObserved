@@ -31,5 +31,20 @@ public class Mapper{
 		}
 		return value;
 	}
+	
+public String parseTo(Object type) throws Exception{
+		
+		ObjectMapper mapper = new ObjectMapper();
+	    String value = "";
+		try {
+	       
+			value=mapper.writeValueAsString(type);
+			
+			
+		}catch(Exception ex){
+			
+		}
+		return value;
+	}
 	 
 }
