@@ -17,6 +17,7 @@ public class ObservedType implements Serializable
     @Nullable private IpSearchType ip = null;
     @Nullable private String observation = null;
     @Nullable private PersonSearchType person = null;
+   
 
     
     public AddressSerchType getAddress() {
@@ -79,6 +80,7 @@ public class ObservedType implements Serializable
 	}
 
 
+	
 	private static final long serialVersionUID = 1449310910991872227L;
 
 }

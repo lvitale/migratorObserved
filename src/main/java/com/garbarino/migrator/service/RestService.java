@@ -2,10 +2,12 @@ package com.garbarino.migrator.service;
 
 
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +25,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.garbarino.migrator.enums.ServiceName;
 import com.garbarino.migrator.enums.State;
 import com.garbarino.migrator.type.ResulSet;
+import com.garbarino.migrator.type.ResultId;
+import com.garbarino.migrator.utils.Mapper;
 import com.garbarino.migrator.utils.PropertiesUtil;
 
 
@@ -73,7 +77,7 @@ public class RestService {
 			 Map datos = new ObjectMapper().readValue(resp, Map.class);
 		
 			 // Se establecio correctamente la comunicacion con el servicio
-			 if(response.getStatusLine().getStatusCode() == 200 && "ok".equals(datos.get("status"))){
+			 if(response.getStatusLine().getStatusCode() == 200 && "OK".equals(datos.get("status"))){
 				 result.setState(State.OK);
 			 }else{	   
 				 result.setState(State.ERROR);
@@ -88,7 +92,33 @@ public class RestService {
 		}
 		 results.add(result);
 	}
+	public Integer callServ(String json){
+		HttpResponse response;
+		ResultId res = null;
 		
+		try{
+			
+			 HttpClient httpclient= new DefaultHttpClient();
+		
+			 HttpPost httppost= new HttpPost (getUlrService());
+			 StringEntity se=new StringEntity (json,"UTF-8");
+			 se.setContentType("application/json;charset=UTF-8");
+       
+			 httppost.setEntity(se);
+       
+			 httppost.setHeader("Accept", "application/json");
+			 httppost.setHeader("Content-type", "application/json;charset=UTF-8");
+			 httppost.setHeader(getTokenName(), getTokenValue());
+       
+			 response=httpclient.execute(httppost);
+			 String resp =  EntityUtils.toString(response.getEntity());
+			 res = Mapper.getInstance().mapperToResultset(resp);
+			 
+		}catch(Exception e){
+			System.err.append(e.getMessage());
+		}
+		return res.getId();
+	}	
 	public void grabarArchivo(){
 		File file= new File("src/main/resources/archivo.out");
 		FileWriter fw  = null;
@@ -134,7 +164,12 @@ public class RestService {
 		}if(ServiceName.ADDRESS_REPORT.equals(serviceName)){
 			url.append(property.getPropertie("genesis.service.address.report"));
 		}
-		
+		if(ServiceName.CITY_ID_SEARCH.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.cityId.search"));
+		}
+		if(ServiceName.CARD_ID_SEARCH.equals(serviceName)){
+			url.append(property.getPropertie("genesis.service.cardId.search"));
+		}
 		if(ServiceName.OBSERVED_CHECK.equals(serviceName)){
 			url.append(property.getPropertie("genesis.service.observed.check"));
 		}if(ServiceName.CARD_CHECK.equals(serviceName)){

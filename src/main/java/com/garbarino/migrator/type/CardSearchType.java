@@ -15,10 +15,12 @@ public class CardSearchType
     //~ Fields ...................................................................................................................
 
     @NotNull private String binNumber = "";
-    @NotNull private Brand cardbrand = Brand.NARANJA;
+    @NotNull private Integer cardbrand = 0 ;
     @NotNull private IdType docType = IdType.NOT_INFORMED;
     @NotNull private String docValue = "";
     @NotNull private String lastNumber = "";
+    @Nullable private String firstName = "";
+    @Nullable private String lastName = "";
     @Nullable private String observation = null;
 
     private static final long serialVersionUID = 1449310910991872227L;
@@ -31,11 +33,11 @@ public class CardSearchType
 		this.binNumber = binNumber;
 	}
 
-	public Brand getCardbrand() {
+	public Integer getCardbrand() {
 		return cardbrand;
 	}
 
-	public void setCardbrand(Brand cardbrand) {
+	public void setCardbrand(Integer cardbrand) {
 		this.cardbrand = cardbrand;
 	}
 
@@ -69,6 +71,22 @@ public class CardSearchType
 
 	public void setObservation(String observation) {
 		this.observation = observation;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
     

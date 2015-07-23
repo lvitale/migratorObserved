@@ -39,9 +39,10 @@ public class MigratorManager {
 	private void callService(DatoNegativo negativo){
 		try{
 			 RestService.getInstance().setId(negativo.getId());
+			 String json = Mapper.getInstance().parse(negativo.populateObserved());
 			 RestService.getInstance().setServiceName(ServiceName.OBSERVED_REPORT);
-			 RestService.getInstance().call(Mapper.getInstance().parse(negativo.populateObserved()));
-			 verifyOperation(negativo.populateObserved(),RestService.getInstance().getResult());
+			 RestService.getInstance().call(json);
+			 //verifyOperation(negativo.populateObserved(),RestService.getInstance().getResult());
 			 
 		}catch(Exception ex){
 				

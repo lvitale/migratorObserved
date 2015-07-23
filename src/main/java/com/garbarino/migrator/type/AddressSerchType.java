@@ -11,6 +11,9 @@ public class AddressSerchType implements Serializable
 {
 
     @Nullable private Address addresses = null;
+    @Nullable private String buildingFloor = null;
+    @Nullable private String buildingRoom = null;
+    @NotNull private String state = "";
     @NotNull private String city = "";
     @NotNull private String number = "";
     @Nullable private String observation = null;
@@ -64,6 +67,36 @@ public class AddressSerchType implements Serializable
 
 	public void setStreetName(String streetName) {
 		this.streetName = streetName;
+	}
+
+
+	public String getBuildingFloor() {
+		return buildingFloor;
+	}
+
+
+	public void setBuildingFloor(String buildingFloor) {
+		this.buildingFloor = buildingFloor;
+	}
+
+
+	public String getBuildingRoom() {
+		return buildingRoom;
+	}
+
+
+	public void setBuildingRoom(String buildingRoom) {
+		this.buildingRoom = buildingRoom;
+	}
+
+
+	public String getState() {
+		return state;
+	}
+
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 

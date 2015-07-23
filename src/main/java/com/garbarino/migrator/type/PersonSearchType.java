@@ -17,6 +17,9 @@ public class PersonSearchType
     @NotNull private GenderType gender = GenderType.MALE;
     @Nullable private String lastName = null;
     @Nullable private String observation = null;
+    @Nullable private Integer partyId = null; 
+    @Nullable private String phone = null;
+    @Nullable private Integer cityId = null;
     
     
     public IdType getDocType() {
@@ -87,6 +90,45 @@ public class PersonSearchType
 	public void setObservation(String observation) {
 		this.observation = observation;
 	}
+
+
+	
+
+
+	public Integer getPartyId() {
+		return partyId;
+	}
+
+
+	public void setPartyId(Integer partyId) {
+		this.partyId = partyId;
+	}
+
+
+
+
+
+	public String getPhone() {
+		return phone;
+	}
+
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+	public Integer getCityId() {
+		return cityId;
+	}
+
+
+	public void setCityId(Integer cityId) {
+		this.cityId = cityId;
+	}
+
+
+
 
 
 	private static final long serialVersionUID = 1449310910991872227L;

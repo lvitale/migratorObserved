@@ -1,15 +1,22 @@
 package com.garbarino.migrator.entity;
 
+import java.text.Collator;
 import java.util.Date;
 
 import com.garbarino.migrator.enums.Brand;
 import com.garbarino.migrator.enums.GenderType;
 import com.garbarino.migrator.enums.IdType;
+import com.garbarino.migrator.enums.ServiceName;
+import com.garbarino.migrator.service.RestService;
 import com.garbarino.migrator.type.AddressSerchType;
 import com.garbarino.migrator.type.CardSearchType;
 import com.garbarino.migrator.type.IpSearchType;
 import com.garbarino.migrator.type.ObservedType;
 import com.garbarino.migrator.type.PersonSearchType;
+import com.garbarino.migrator.type.ResulSet;
+import com.garbarino.migrator.type.SearchCard;
+import com.garbarino.migrator.type.SearchCity;
+import com.garbarino.migrator.utils.Mapper;
 
 
 public class DatoNegativo {
@@ -31,6 +38,7 @@ public class DatoNegativo {
 	private Long operacion;
 	private Date fecha;
 	private String username;
+	private String cityId;
 	
 	public int getId() {
 		return id;
@@ -135,12 +143,20 @@ public class DatoNegativo {
 		this.username = username;
 	}
 	
-	public ObservedType populateObserved(){
+	public String getCityId() {
+		return cityId;
+	}
+	public void setCityId(String cityId) {
+		this.cityId = cityId;
+	}
+	public ObservedType populateObserved() throws Exception{
 		ObservedType observed = new ObservedType();
 		if(populateAddress() != null) observed.setAddress(populateAddress());
 		if(populateCard() != null)observed.setCard(populateCard());
 		if(populateIp() != null)observed.setIp(populateIp());
 		if(populatePerson() != null)observed.setPerson(populatePerson());
+		//invocamos al servicio para traer el id de la ciudad - si esta informado
+				
 		observed.setObservation(observaciones);
 		return observed;
 	}
@@ -153,14 +169,14 @@ public class DatoNegativo {
 		}
 		return ipSearch;
 	}
-	private CardSearchType populateCard(){
+	private CardSearchType populateCard() throws Exception{
 		CardSearchType card = null;
 		
-		Brand brand = Brand.NONE.getCard(tarjeta);
+		Integer brand = callServiceCardId();
 		if(brand != null && numTarjeta != null && documento != null ){
 		String tarj = numTarjeta.trim();	
 		card = new CardSearchType();		
-		card.setCardbrand(brand);
+		card.setCardbrand(brand);;
 		if(tarj.length() == 4) {
 			card.setLastNumber(tarj);
 		}else{
@@ -171,14 +187,16 @@ public class DatoNegativo {
 				card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
 			}
 		}
+		card.setFirstName(nombre);
+		card.setLastName(apellido);
 		card.setDocType(IdType.DNI);
-		card.setDocValue(documento.trim());	
+		card.setDocValue(documento.trim());
 		card.setObservation(observaciones);
 		}
 		return card;
 	}
 	
-	private PersonSearchType populatePerson(){
+	private PersonSearchType populatePerson() throws Exception{
 		PersonSearchType person = null;
 		if(documento !=  null){
 		person = new PersonSearchType();
@@ -189,6 +207,19 @@ public class DatoNegativo {
 		person.setDocType(IdType.DNI);
 		person.setGender(GenderType.NONE);
 		person.setObservation(observaciones);
+		Collator comparador = Collator.getInstance();
+		 
+		// Ejemplo del metodo equals
+		 
+		// Para no distinguir entre mayusculas, minusculas y letras con acentos.
+		comparador.setStrength(Collator.PRIMARY);
+		 
+		// Se hace la comparación (Son iguales)
+		if (comparador.equals(localidad, "CIUDAD AUTÓNOMA DE BUENOS AIRES")) {
+		      person.setCityId(11);
+		}else{      
+		person.setCityId(callServiceCityId());		
+		}
 		}
 		return person;
 	}
@@ -196,12 +227,46 @@ public class DatoNegativo {
 		AddressSerchType addressSerch = null;
 		if(numCalle != null && calle != null && localidad != null){
 		addressSerch = new AddressSerchType();
+		addressSerch.setState((provincia != null) ? provincia : "NOT_INFORMED");
 		addressSerch.setCity(localidad);
 		addressSerch.setNumber(numCalle);
+		addressSerch.setBuildingFloor((piso != null) ? piso : "0");
+		addressSerch.setBuildingRoom((departamento != null) ? departamento : "0");
 		addressSerch.setObservation(observaciones);
 		addressSerch.setStreetName(calle);
 		}
 		return addressSerch;
+	}
+	private SearchCity populateCityId(){
+		SearchCity searchCity = null;
+		if(localidad != null){
+			searchCity = new SearchCity();
+			searchCity.setSubdivision(localidad);
+		}
+		return searchCity;
+		
+	}
+	private SearchCard populateCardId(){
+		SearchCard searchCard = null;
+		if(tarjeta != null){
+			searchCard = new SearchCard();
+			searchCard.setDescription(tarjeta);
+		}
+		return searchCard;
+	}
+	private Integer callServiceCityId() throws Exception{
+		String json= Mapper.getInstance().parseTo(populateCityId());
+		RestService.getInstance().setServiceName(ServiceName.CITY_ID_SEARCH);
+		return RestService.getInstance().callServ(json);
+		
+	}
+	private Integer callServiceCardId() throws Exception{
+		String json= Mapper.getInstance().parseTo(populateCardId());
+		if(!json.equals("null")){
+		RestService.getInstance().setServiceName(ServiceName.CARD_ID_SEARCH);
+		return RestService.getInstance().callServ(json);
+		}
+		return null;
 	}
 	
 }

@@ -102,6 +102,7 @@ public class MigratorForm extends JFrame {
 			MigratorManager manager = new MigratorManager(getRows());
 			manager.migrate();
 
+
 			lblResultado.setText("Ok");
 		}catch(Exception ex){
 			System.out.println(ex.getCause());
