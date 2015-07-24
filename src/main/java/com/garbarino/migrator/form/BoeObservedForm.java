@@ -1,5 +1,4 @@
 package com.garbarino.migrator.form;
-
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -15,9 +14,11 @@ import javax.swing.border.EmptyBorder;
 
 import com.garbarino.migrator.context.Context;
 import com.garbarino.migrator.enums.SchemaBoe;
-import com.garbarino.migrator.manager.MigratorManager;
+import com.garbarino.migrator.manager.BoeManager;
+import java.awt.Font;
 
-public class MigratorForm extends JFrame {
+
+public class BoeObservedForm extends JFrame {
 
 	private JPanel contentPane;
 	private final JLabel lblNewLabel = new JLabel("Resultado");
@@ -45,10 +46,11 @@ public class MigratorForm extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MigratorForm() {
+	public BoeObservedForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.ORANGE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -87,8 +89,9 @@ public class MigratorForm extends JFrame {
 		lblEsquemaBoe.setBounds(61, 82, 155, 15);
 		contentPane.add(lblEsquemaBoe);
 		
-		JLabel lblTitulo = new JLabel("Test Boe");
-		lblTitulo.setBounds(130, 26, 70, 15);
+		JLabel lblTitulo = new JLabel("Testeo Boe");
+		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 15));
+		lblTitulo.setBounds(170, 0, 163, 27);
 		contentPane.add(lblTitulo);
 	}
 	private void procesar(){
@@ -99,9 +102,8 @@ public class MigratorForm extends JFrame {
 			Context.getInstance().setContext(boe);
 			Context.getInstance().changeContext();
 			
-			MigratorManager manager = new MigratorManager(getRows());
-			manager.migrate();
-
+			BoeManager manager = new BoeManager();
+			manager.verifyObserved(getRows());
 
 			lblResultado.setText("Ok");
 		}catch(Exception ex){

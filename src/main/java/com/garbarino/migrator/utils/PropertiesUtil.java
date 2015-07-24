@@ -31,7 +31,7 @@ public class PropertiesUtil {
     		prop.load(in);
     		in.close();
 		} catch (IOException ex) {
-			System.out.println(ex.getCause());
+			System.out.println(ex.getMessage());
 		}
     	
     }

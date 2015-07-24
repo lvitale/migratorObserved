@@ -15,6 +15,7 @@ public class ConnectionDao {
 	public void connect()throws Exception{
 		
 		Class.forName("oracle.jdbc.driver.OracleDriver");
+		//DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
 		cn = DriverManager.getConnection(getUrl(),getUser(),getPassword());
 	}
 

@@ -7,7 +7,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.garbarino.migrator.type.ObservedType;
-import com.garbarino.migrator.type.ResulSet;
 import com.garbarino.migrator.type.ResultId;
 
 public class Mapper{

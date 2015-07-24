@@ -3,6 +3,7 @@ package com.garbarino.migrator.enums;
 import org.jetbrains.annotations.NotNull;
 
 
+
 public enum Brand
     
 {

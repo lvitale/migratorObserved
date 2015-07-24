@@ -43,7 +43,7 @@ public class DatoNegativoDao {
 		}
 		connection.close();
 		}catch(Exception ex){
-			System.out.println(ex.getCause());
+			System.out.println(ex.getMessage());
 		}finally{
 			
 		}

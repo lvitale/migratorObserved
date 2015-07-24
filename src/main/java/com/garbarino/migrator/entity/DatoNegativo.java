@@ -3,7 +3,6 @@ package com.garbarino.migrator.entity;
 import java.text.Collator;
 import java.util.Date;
 
-import com.garbarino.migrator.enums.Brand;
 import com.garbarino.migrator.enums.GenderType;
 import com.garbarino.migrator.enums.IdType;
 import com.garbarino.migrator.enums.ServiceName;
@@ -13,7 +12,6 @@ import com.garbarino.migrator.type.CardSearchType;
 import com.garbarino.migrator.type.IpSearchType;
 import com.garbarino.migrator.type.ObservedType;
 import com.garbarino.migrator.type.PersonSearchType;
-import com.garbarino.migrator.type.ResulSet;
 import com.garbarino.migrator.type.SearchCard;
 import com.garbarino.migrator.type.SearchCity;
 import com.garbarino.migrator.utils.Mapper;

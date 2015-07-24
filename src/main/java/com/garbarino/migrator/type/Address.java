@@ -3,6 +3,7 @@ package com.garbarino.migrator.type;
 import org.jetbrains.annotations.Nullable;
 
 
+
 public  class Address
 {
        
