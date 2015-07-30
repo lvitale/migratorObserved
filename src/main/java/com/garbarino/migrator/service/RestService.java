@@ -73,11 +73,12 @@ public class RestService {
 			 response=httpclient.execute(httppost);
        
 			 result.setResponse(response.getEntity().getContent().toString());
-			 String resp =  EntityUtils.toString(response.getEntity()); 		
+			 String resp =  EntityUtils.toString(response.getEntity());
+			 System.out.println(resp);
 			 Map datos = new ObjectMapper().readValue(resp, Map.class);
 		
 			 // Se establecio correctamente la comunicacion con el servicio
-			 if(response.getStatusLine().getStatusCode() == 200 && "OK".equals(datos.get("status"))){
+			 if(response.getStatusLine().getStatusCode() == 200){
 				 result.setState(State.OK);
 			 }else{	   
 				 result.setState(State.ERROR);

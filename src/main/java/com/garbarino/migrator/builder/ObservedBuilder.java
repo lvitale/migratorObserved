@@ -91,12 +91,16 @@ public class ObservedBuilder {
 		String numCalle = dto.getPersonEcommerce().getAltura();
 		String localidad = dto.getPersonEcommerce().getLocalidad();
 		String calle = dto.getPersonEcommerce().getCalle();
+		String piso = dto.getPersonEcommerce().getPiso();
+		String departamento = dto.getPersonEcommerce().getDepartamento();
 		
 		if(numCalle != null && calle != null && localidad != null){
 		addressSerch = new AddressSerchType();
 		addressSerch.setCity(localidad);
 		addressSerch.setNumber(numCalle);
 		addressSerch.setStreetName(calle);
+		addressSerch.setBuildingFloor((piso != null) ? piso : "0");
+		addressSerch.setBuildingRoom((departamento != null) ? departamento : "0");
 		type.setAddress(addressSerch);
 		}
 	}

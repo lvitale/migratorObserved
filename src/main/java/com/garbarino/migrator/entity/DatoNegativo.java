@@ -172,24 +172,28 @@ public class DatoNegativo {
 		
 		Integer brand = callServiceCardId();
 		if(brand != null && numTarjeta != null && documento != null ){
-		String tarj = numTarjeta.trim();	
-		card = new CardSearchType();		
-		card.setCardbrand(brand);;
-		if(tarj.length() == 4) {
-			card.setLastNumber(tarj);
-		}else{
-			if(tarj.length() > 10){
-				card.setBinNumber(tarj.substring(0, 6));
-				card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
+		String tarj = numTarjeta.trim();
+		if(tarj.length() > 3){
+			card = new CardSearchType();		
+			card.setCardbrand(brand);;
+
+			if(tarj.length() == 4) {
+				card.setLastNumber(tarj);
 			}else{
-				card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
+				if(tarj.length() > 10){
+					card.setBinNumber(tarj.substring(0, 6));
+					card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
+				}else{
+					card.setLastNumber(tarj.substring(tarj.length()-4, tarj.length()));
+				}
 			}
+
+			card.setFirstName(nombre);
+			card.setLastName(apellido);
+			card.setDocType(IdType.DNI);
+			card.setDocValue(documento.trim());
+			card.setObservation(observaciones);
 		}
-		card.setFirstName(nombre);
-		card.setLastName(apellido);
-		card.setDocType(IdType.DNI);
-		card.setDocValue(documento.trim());
-		card.setObservation(observaciones);
 		}
 		return card;
 	}
@@ -201,7 +205,7 @@ public class DatoNegativo {
 		
 		person.setFirstName(nombre);
 		person.setLastName(apellido);
-		person.setDocValue(documento.trim());
+		person.setDocValue(documento.trim().replace(".", ""));
 		person.setDocType(IdType.DNI);
 		person.setGender(GenderType.NONE);
 		person.setObservation(observaciones);
@@ -213,10 +217,12 @@ public class DatoNegativo {
 		comparador.setStrength(Collator.PRIMARY);
 		 
 		// Se hace la comparación (Son iguales)
-		if (comparador.equals(localidad, "CIUDAD AUTÓNOMA DE BUENOS AIRES")) {
-		      person.setCityId(11);
-		}else{      
-		person.setCityId(callServiceCityId());		
+		if(localidad != null){
+			if (comparador.equals(localidad, "CIUDAD AUTÓNOMA DE BUENOS AIRES")) {
+				person.setCityId(11);
+			}else{      
+				person.setCityId(callServiceCityId());		
+			}
 		}
 		}
 		return person;
@@ -259,12 +265,15 @@ public class DatoNegativo {
 		
 	}
 	private Integer callServiceCardId() throws Exception{
+		if(!(populateCardId().getDescription().equals("AMERICAN") || populateCardId().getDescription().equals("AMEX"))){
 		String json= Mapper.getInstance().parseTo(populateCardId());
-		if(!json.equals("null")){
-		RestService.getInstance().setServiceName(ServiceName.CARD_ID_SEARCH);
-		return RestService.getInstance().callServ(json);
+		if(!json.equals("null")){			
+				RestService.getInstance().setServiceName(ServiceName.CARD_ID_SEARCH);
+				return RestService.getInstance().callServ(json);
 		}
 		return null;
+		}
+		return 13;
 	}
 	
 }

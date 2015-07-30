@@ -28,6 +28,7 @@ public class MigratorManager {
 			List<DatoNegativo> listado = new ArrayList<DatoNegativo>();
 			listado.addAll(new DatoNegativoDao().findAll(rowsNum));
 			
+			System.out.println(listado.size());
 		
 			for(DatoNegativo negativo : listado){
 				callService(negativo);
@@ -45,8 +46,9 @@ public class MigratorManager {
 			 //verifyOperation(negativo.populateObserved(),RestService.getInstance().getResult());
 			 
 		}catch(Exception ex){
-				
+				System.out.println(ex.getMessage());
 			}
+		
 		}
 	private void verifyOperation(ObservedType type,ResulSet rs){
 		try{
