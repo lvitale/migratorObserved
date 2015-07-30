@@ -265,15 +265,18 @@ public class DatoNegativo {
 		
 	}
 	private Integer callServiceCardId() throws Exception{
-		if(!(populateCardId().getDescription().equals("AMERICAN") || populateCardId().getDescription().equals("AMEX"))){
-		String json= Mapper.getInstance().parseTo(populateCardId());
-		if(!json.equals("null")){			
-				RestService.getInstance().setServiceName(ServiceName.CARD_ID_SEARCH);
-				return RestService.getInstance().callServ(json);
+		if(populateCardId() != null){
+			if(!(populateCardId().getDescription().equals("AMERICAN") || populateCardId().getDescription().equals("AMEX"))){
+				String json= Mapper.getInstance().parseTo(populateCardId());
+				if(!json.equals("null")){			
+					RestService.getInstance().setServiceName(ServiceName.CARD_ID_SEARCH);
+					return RestService.getInstance().callServ(json);
+				}
+				return null;
+			}
+			return 13;
 		}
 		return null;
-		}
-		return 13;
 	}
 	
 }

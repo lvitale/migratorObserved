@@ -16,8 +16,8 @@ public class DatoNegativoDao {
 		List<DatoNegativo> listado = new ArrayList<DatoNegativo>();
 		try{
 		connection.connect();
-		//ResultSet rs=connection.executeQuery("SELECT * FROM DATOS_NEGATIVOS WHERE ROWNUM < "+ rows.toString() );
-		ResultSet rs=connection.executeQuery("select * from datos_negativos where tarjeta is not null and numero_tarj is not null and documento is not null and tarjeta like upper('%ame%')");
+		ResultSet rs=connection.executeQuery("SELECT * FROM DATOS_NEGATIVOS WHERE ROWNUM < "+ rows.toString() );
+		
 		while(rs.next()){
 			DatoNegativo negativo = new DatoNegativo();
 			
